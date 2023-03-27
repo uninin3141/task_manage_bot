@@ -3,14 +3,18 @@ from datetime import datetime, timedelta
 import os
 import sys
 from pathlib import Path
+
 sql_pass =os.environ["SQL_PASSWORD"]
+railway_host =os.environ["RAILWAY_HOST"]
+railway_user =os.environ["RAILWAY_USER"]
+railway_database =os.environ["RAILWAY_DATABASE"]
 
 def get_connection():
     connection = mysql.connector.connect(
-        host="uninin_PC",
-        user="uninin",
+        host=railway_host,
+        user=railway_user,
         password= sql_pass,
-        database="task_manage",
+        database=railway_database,
     )
     return connection
 #データの取得
