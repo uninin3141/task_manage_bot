@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app/ .
 
 # 実行コマンドの設定
-CMD ["python", "discord.py"]
+CMD ["python", "main.py"]
