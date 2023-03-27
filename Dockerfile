@@ -12,7 +12,7 @@ COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # アプリケーションのコードをコピー
-COPY . .
+COPY app/ .
 
 # 実行コマンドの設定
-CMD ["python", "/app/discord.py"]
+CMD ["python", "discord.py"]
