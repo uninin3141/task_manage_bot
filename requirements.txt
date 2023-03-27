@@ -1,3 +1,5 @@
 discord.py[voice]
 pytz
 mysql.connector
+pandas
+matplotlib
