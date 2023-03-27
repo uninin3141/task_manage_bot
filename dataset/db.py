@@ -1,4 +1,4 @@
-import mysql.connector
+import mysql.connector.rf
 from datetime import datetime, timedelta
 import os
 import sys
