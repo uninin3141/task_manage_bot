@@ -8,6 +8,7 @@ sql_pass =os.environ["MYSQLPASSWORD"]
 railway_host =os.environ["MYSQLHOST"]
 railway_user =os.environ["MYSQLUSER"]
 railway_database =os.environ["MYSQLDATABASE"]
+railway_port = int(os.environ["MYSQLPORT"])
 
 def get_connection():
     connection = mysql.connector.connect(
@@ -15,6 +16,7 @@ def get_connection():
         user=railway_user,
         password= sql_pass,
         database=railway_database,
+        port=railway_port,
     )
     return connection
 #データの取得
