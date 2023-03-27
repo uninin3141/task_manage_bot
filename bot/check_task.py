@@ -51,7 +51,7 @@ class CheckTask:
         df = df.rename(columns={'id': 'id', 'status': '進捗','priority':'優先度','datetime':'開始日時','task':'タスク名'})
        
         # 日本語フォントの設定
-        matplotlib.rcParams['font.family'] = 'MS Gothic'
+        matplotlib.rcParams['font.family'] = 'IPAexGothic'
         matplotlib.rcParams['axes.unicode_minus'] = False
 
         #セルの高さ調整関数
