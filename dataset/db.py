@@ -56,14 +56,14 @@ def update_status(task_id, user_id, status):
         cursor.close()
         connection.close()
 
-#24時間経過したタスクの出力
+#24時間経過かつ未了のタスクの出力
 def get_expired_tasks(current_time):
     connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
     expired_time = current_time - timedelta(days=1)
     cursor.execute(
-        "SELECT * FROM tasks WHERE datetime <= %s",
+        "SELECT * FROM tasks WHERE datetime <= %s AND status = '未了' ",
         (expired_time,)
     )
 
