@@ -20,10 +20,7 @@ class AnnounceTask:
     async def get_username(self, user_id):
         user = await self.client.fetch_user(user_id)
         return f"{user.name}#{user.discriminator}"
-    # ユーザーメンション取得関数
-    async def get_mention(self, user_id):
-        user = await self.client.fetch_user(user_id)
-        return f"<@{user.id}>"
+    
     
     #task_announce関数
     async def task_announce(self,channel_id):
@@ -73,13 +70,12 @@ class AnnounceTask:
                 plt.savefig(buf, format='png', bbox_inches='tight')
                 buf.seek(0)
                 
-                mentions = await asyncio.gather(*[self.get_mention(user_id) for user_id in df["user"]])
-
+               
                 embed = discord.Embed(title="24時間経過かつ進捗が未了のタスクだよ\n終わってないとかマ？", color=0xFF0000)
                 file = discord.File(buf, filename='tasks.png')
                 embed.set_image(url="attachment://tasks.png")
                 await channel.send(file=file, embed=embed)
-                await channel.send(" ".join(mentions))
+                
                 
 
             else:
