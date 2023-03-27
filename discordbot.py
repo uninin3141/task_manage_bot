@@ -13,7 +13,6 @@ from bot.update_status import UpdateStatus
 #環境変数からTOKEN読み込み
 TOKEN = os.environ["TASKSCHEDULE_DISCORD_BOT_TOKEN"]
 
-
 #intentsの指定
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
