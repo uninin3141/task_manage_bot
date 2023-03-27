@@ -39,7 +39,7 @@ class AnnounceTask:
                 df["user"] = await asyncio.gather(*[self.get_username(user_id) for user_id in df["user"]])
             
                 # 日本語フォントの設定
-                matplotlib.rcParams['font.family'] = 'MS Gothic'
+                matplotlib.rcParams['font.family'] = 'IPAexGothic'
                 matplotlib.rcParams['axes.unicode_minus'] = False
 
                 #セルの高さ調整関数
