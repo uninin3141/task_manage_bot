@@ -3,13 +3,13 @@ from datetime import datetime, timedelta
 import os
 import sys
 from pathlib import Path
-#sql_pass =os.environ["SQL_PASSWORD"]
+sql_pass =os.environ["SQL_PASSWORD"]
 
 def get_connection():
     connection = mysql.connector.connect(
         host="uninin_PC",
         user="uninin",
-        password= "%%Uninin4353he3k4o5ra", #sql_pass,
+        password= sql_pass,
         database="task_manage",
     )
     return connection
