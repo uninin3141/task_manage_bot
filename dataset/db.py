@@ -4,10 +4,10 @@ import os
 import sys
 from pathlib import Path
 
-sql_pass =os.environ["SQL_PASSWORD"]
-railway_host =os.environ["RAILWAY_HOST"]
-railway_user =os.environ["RAILWAY_USER"]
-railway_database =os.environ["RAILWAY_DATABASE"]
+sql_pass =os.environ["MYSQLPASSWORD"]
+railway_host =os.environ["MYSQLHOST"]
+railway_user =os.environ["MYSQLUSER"]
+railway_database =os.environ["MYSQLDATABASE"]
 
 def get_connection():
     connection = mysql.connector.connect(
