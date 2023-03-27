@@ -63,7 +63,7 @@ class CheckTask:
         font_size = 130
 
         # プロットの作成
-        fig, ax = plt.subplots(figsize=(font_size * 0.5, len(tasks) * font_size * 0.1))
+        fig, ax = plt.subplots(figsize=(font_size * 0.5, len(tasks) * font_size * 0.15))
         ax.axis('off')
         ax.axis('tight')
         table = ax.table(cellText=df.values, colLabels=df.columns, cellLoc='center', loc='center')

@@ -43,15 +43,15 @@ class UpdateStatus:
         
         #statusへの入力値を制限する関数        
         def is_valid_status(input_str):
-            return input_str == "未了" or input_str == "完了"
+            return input_str == "未了"or input_str == "仕掛中" or input_str == "完了"
 
         embed_task_id = discord.Embed(title="ステータスを更新したいタスクのIDを数字で入力してね", description="", color=0x00ff00)
         task_id = await request_input(embed_task_id)
         task_id = await validate_input(task_id, is_int, "タスクIDが不正だよ。整数値を再度入力してね。")
 
-        embed_status = discord.Embed(title="新しいタスクのステータスを【未了】か【完了】のどちらかで入力してね",description="", color=0x00ff00)
+        embed_status = discord.Embed(title="新しいタスクのステータスを【未了】、【仕掛中】、【完了】のどれかを入力してね",description="", color=0x00ff00)
         status = await request_input(embed_status)
-        status = await validate_input(status, is_valid_status, "ステータスの形式が不正だよ。【未了】,【完了】のどちらかを再度入力してね。")
+        status = await validate_input(status, is_valid_status, "ステータスの形式が不正だよ。【未了】,【仕掛中】、【完了】のどれかを再度入力してね。")
 
         update_status(task_id, user_id, status)
 
