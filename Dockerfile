@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y fonts-ipaexfont-gothic
 WORKDIR /app
 
 # 依存関係をインストール
-COPY requirements.txt .
+COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # アプリケーションのコードをコピー
