@@ -3,8 +3,7 @@ from datetime import datetime, timedelta
 import os
 import sys
 from pathlib import Path
-
-sql_pass =os.environ["MYSQLPASSWORD"]
+sql_pass =os.environ["SQL_PASSWORD"]
 railway_host =os.environ["MYSQLHOST"]
 railway_user =os.environ["MYSQLUSER"]
 railway_database =os.environ["MYSQLDATABASE"]
@@ -12,20 +11,37 @@ railway_port = int(os.environ["MYSQLPORT"])
 
 def get_connection():
     connection = mysql.connector.connect(
-        host=railway_host,
-        user=railway_user,
+        host = railway_host,
+        user= railway_user,
         password= sql_pass,
         database=railway_database,
-        port=railway_port,
+        port = railway_port,
     )
     return connection
-#データの取得
+#未完了データの取得
 def get_tasks(user_id):
     connection = get_connection()
     cursor = connection.cursor(dictionary=True)
 
     cursor.execute(
-        "SELECT * FROM tasks WHERE user_id = %s",
+        "SELECT * FROM tasks WHERE user_id = %s AND status !='完了' ",
+        (user_id,)
+    )
+
+    tasks = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    return tasks
+
+
+#全件データの取得
+def get_all_tasks(user_id):
+    connection = get_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT * FROM tasks WHERE user_id = %s ",
         (user_id,)
     )
 
@@ -35,12 +51,12 @@ def get_tasks(user_id):
 
     return tasks
 #新規のデータの追加
-def add_task(user_id, datetime_str, task,status,priority):
+def add_task(user_id, starttime_str, task,status,priority,endtime_str):
     connection = get_connection()
     cursor = connection.cursor()
 
-    cursor.execute( "INSERT INTO tasks (user_id, datetime, task,status,priority) VALUES (%s, %s, %s,%s,%s)",
-        (user_id, datetime_str, task,status,priority)
+    cursor.execute( "INSERT INTO tasks (user_id, starttime, task,status,priority,endtime) VALUES (%s, %s, %s,%s,%s,%s)",
+        (user_id, starttime_str, task,status,priority,endtime_str)
     )
 
     connection.commit()
@@ -69,7 +85,7 @@ def get_expired_tasks(current_time):
 
     expired_time = current_time - timedelta(days=1)
     cursor.execute(
-        "SELECT * FROM tasks WHERE datetime <= %s AND status = '未了' ",
+        "SELECT * FROM tasks WHERE endtime <= %s AND status != '完了' ",
         (expired_time,)
     )
 
