@@ -49,9 +49,13 @@ class RecordTask:
             return input_str == "高" or input_str == "低"
 
     
-        embed_time = discord.Embed(title="タスク開始日時を【YYYY-MM-DD HH:MM:SS】形式で入力してね", description="", color=0x00ff00)
-        datetime_str = await request_input(embed_time)
-        datetime_str = await validate_input(datetime_str, is_valid_datetime, "日時の形式が不正だよ。【YYYY-MM-DD HH:MM:SS】形式で再度入力してね。")
+        embed_starttime = discord.Embed(title="タスク予定開始日時を【YYYY-MM-DD HH:MM:SS】形式で入力してね", description="", color=0x00ff00)
+        starttime_str = await request_input(embed_starttime)
+        starttime_str = await validate_input(starttime_str, is_valid_datetime, "日時の形式が不正だよ。【YYYY-MM-DD HH:MM:SS】形式で再度入力してね。")
+
+        embed_endtime = discord.Embed(title="タスク予定終了日時を【YYYY-MM-DD HH:MM:SS】形式で入力してね", description="", color=0x00ff00)
+        endtime_str = await request_input(embed_endtime)
+        endtime_str = await validate_input(starttime_str, is_valid_datetime, "日時の形式が不正だよ。【YYYY-MM-DD HH:MM:SS】形式で再度入力してね。")
 
         embed_task = discord.Embed(title="タスクを入力してね", description="", color=0x00ff00)
         task = await request_input(embed_task)
@@ -64,7 +68,7 @@ class RecordTask:
         #デフォルトのフラグを未了に設定
         status = "未了"
 
-        add_task(user_id, datetime_str, task, status,priority)
+        add_task(user_id, starttime_str, task, status,priority,endtime_str)
 
         embed_record = discord.Embed(title="タスクが記録されたよ", description="", color=0x00ff00)
         await message.channel.send(embed=embed_record)

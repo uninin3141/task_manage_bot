@@ -5,10 +5,6 @@ sys.path.append(path)
 import asyncio
 import discord
 import pytz
-import pandas as pd
-import matplotlib
-import matplotlib.pyplot as plt
-import io
 from datetime import datetime, timedelta
 from dataset.db import get_expired_tasks
 
@@ -19,8 +15,31 @@ class AnnounceTask:
     #ユーザーネーム取得関数    
     async def get_username(self, user_id):
         user = await self.client.fetch_user(user_id)
-        return f"{user.name}#{user.discriminator}"
+        return f"{user.name}"
+    #ユーザーメンション取得関数    
+    async def get_usermention(self, user_id):
+        user = await self.client.fetch_user(user_id)
+        return f"{user.mention}"
     
+    async def create_task_embeds(self,tasks, tasks_per_embed=5):
+        task_embeds = []
+        num_embeds = (len(tasks) + tasks_per_embed - 1) // tasks_per_embed
+
+        for i in range(num_embeds):
+            start_index = i * tasks_per_embed
+            end_index = min(start_index + tasks_per_embed, len(tasks))
+            current_tasks = tasks[start_index:end_index]
+
+            embed = discord.Embed(title=f"完了してないタスク一覧だよ、はよやれやカスぅ ({start_index + 1} - {end_index})", description="", color=0x0000FF)
+
+            for task in current_tasks:
+                user_name = await self.get_username(task['user_id'])
+                task_details = f"ID: {task['id']}\n進捗: {task['status']}\n優先度: {task['priority']}\n予定開始日時: {task['starttime']}\n予定終了日時: {task['endtime']}"
+                embed.add_field(name=f"【{user_name}】 {task['task']}", value=task_details, inline=False)
+
+            task_embeds.append(embed)
+
+        return task_embeds
     
     #task_announce関数
     async def task_announce(self,channel_id):
@@ -33,50 +52,14 @@ class AnnounceTask:
             channel = self.client.get_channel(channel_id)
 
             if tasks:
-                
-                df = pd.DataFrame(tasks, columns=["id","user_id", "status", "priority", "datetime", "task"])
-                # カラム名を変更する
-                df = df.rename(columns={'id': 'id', "user_id":"user",'status': '進捗','priority':'優先度','datetime':'開始日時','task':'タスク名'})
-                            
-                df["user"] = await asyncio.gather(*[self.get_username(user_id) for user_id in df["user"]])
-            
-                # 日本語フォントの設定
-                matplotlib.rcParams['font.family'] = 'IPAexGothic'
-                matplotlib.rcParams['axes.unicode_minus'] = False
+                # タスクのユーザーIDを取得し、メンションを作成
+                mentions = ', '.join([await self.get_usermention(task['user_id']) for task in tasks])
+                 # メンションを含むメッセージを送信
+                await channel.send(f"{mentions} 完了していないタスクがあるよ！")
 
-                #セルの高さ調整関数
-                def adjust_cell_height(table, font_size):
-                    for key, cell in table.get_celld().items():
-                        cell.set_height(font_size * 0.001)
-
-                # フォントサイズ
-                font_size = 200
-
-                # プロットの作成
-                fig, ax = plt.subplots(figsize=(font_size * 0.55, len(tasks) * font_size * 0.08))
-                ax.axis('off')
-                ax.axis('tight')
-                table = ax.table(cellText=df.values, colLabels=df.columns, cellLoc='center', loc='center')
-
-                # 列幅を調整
-                table.auto_set_column_width(col=list(range(len(df.columns))))
-                table.set_fontsize(font_size)  # フォントサイズを調整
-
-                # セルの高さを調整
-                adjust_cell_height(table, font_size)
-
-                # 画像として保存
-                buf = io.BytesIO()
-                plt.savefig(buf, format='png', bbox_inches='tight')
-                buf.seek(0)
-                
-               
-                embed = discord.Embed(title="24時間経過かつ進捗が未了のタスクだよ\n終わってないとかマ？", color=0xFF0000)
-                file = discord.File(buf, filename='tasks.png')
-                embed.set_image(url="attachment://tasks.png")
-                await channel.send(file=file, embed=embed)
-                
-                
+                task_embeds = await self.create_task_embeds(tasks)
+                for embed in task_embeds:
+                    await channel.send(embed=embed)
 
             else:
                 embed = discord.Embed(title=f"24時間経過かつ未了のタスクは誰もないよ、気持ち良すぎだろ！", description="", color=0xFF0000)
