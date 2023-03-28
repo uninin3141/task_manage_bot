@@ -55,7 +55,7 @@ class RecordTask:
 
         embed_endtime = discord.Embed(title="タスク予定終了日時を【YYYY-MM-DD HH:MM:SS】形式で入力してね", description="", color=0x00ff00)
         endtime_str = await request_input(embed_endtime)
-        endtime_str = await validate_input(starttime_str, is_valid_datetime, "日時の形式が不正だよ。【YYYY-MM-DD HH:MM:SS】形式で再度入力してね。")
+        endtime_str = await validate_input(endtime_str, is_valid_datetime, "日時の形式が不正だよ。【YYYY-MM-DD HH:MM:SS】形式で再度入力してね。")
 
         embed_task = discord.Embed(title="タスクを入力してね", description="", color=0x00ff00)
         task = await request_input(embed_task)
