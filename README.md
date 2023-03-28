@@ -17,6 +17,7 @@ PythonによるDiscordBotのアプリケーションファイルです。
 ### Procfile
 Herokuでのプロセス実行コマンドの設定ファイルです。
 
+
 ### runtime.txt
 Herokuでの実行環境の設定ファイルです。
 
