@@ -21,7 +21,7 @@ intents.message_content = True
 intents.members = True 
 
 #channel_idの指定
-channel_id = 1003859866412126308
+channel_id = 1088916695894208624
 
 #タスクループ型機能実行
 @client.event
