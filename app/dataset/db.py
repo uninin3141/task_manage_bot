@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import os
 import sys
 from pathlib import Path
-sql_pass =os.environ["SQL_PASSWORD"]
+sql_pass =os.environ["MYSQLPASSWORD"]
 railway_host =os.environ["MYSQLHOST"]
 railway_user =os.environ["MYSQLUSER"]
 railway_database =os.environ["MYSQLDATABASE"]
