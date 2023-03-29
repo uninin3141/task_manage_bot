@@ -4,7 +4,7 @@ import os
 path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(path)
 from dataset.db import update_status
-
+from bot.status_button import StatusButton
 import discord
 
 from datetime import datetime
@@ -12,6 +12,8 @@ from datetime import datetime
 class UpdateStatus:
     def __init__(self, client):
         self.client = client
+        self.status_button = StatusButton(client)
+
     #メインのupdate_status機能
     async def update_status(self, message):
         def check(msg):
@@ -40,18 +42,13 @@ class UpdateStatus:
                 return True
             except ValueError:
                 return False
-        
-        #statusへの入力値を制限する関数        
-        def is_valid_status(input_str):
-            return input_str == "未了"or input_str == "仕掛中" or input_str == "完了"
 
         embed_task_id = discord.Embed(title="ステータスを更新したいタスクのIDを数字で入力してね", description="", color=0x00ff00)
         task_id = await request_input(embed_task_id)
         task_id = await validate_input(task_id, is_int, "タスクIDが不正だよ。整数値を再度入力してね。")
 
         embed_status = discord.Embed(title="新しいタスクのステータスを【未了】、【仕掛中】、【完了】のどれかを入力してね",description="", color=0x00ff00)
-        status = await request_input(embed_status)
-        status = await validate_input(status, is_valid_status, "ステータスの形式が不正だよ。【未了】,【仕掛中】、【完了】のどれかを再度入力してね。")
+        status = await self.status_button.get_status_button(message)
 
         update_status(task_id, user_id, status)
 
