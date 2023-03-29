@@ -21,7 +21,7 @@ intents.message_content = True
 intents.members = True 
 
 #channel_idの指定
-channel_id = 1088916695894208624
+channel_id = 1003859866412126308
 
 #タスクループ型機能実行
 @client.event
@@ -36,7 +36,12 @@ async def on_message(message):
         return
 
     if message.content.startswith("/taskrecord"):
-        await RecordTask(client).record_task(message)
+        record_task_instance = RecordTask(client)
+        await record_task_instance.record_start_date(message)
+        await record_task_instance.record_end_date(message)
+        await record_task_instance.record_priority(message)
+        await record_task_instance.record_status(message)
+        await record_task_instance.record_task(message)
     elif message.content.startswith("/taskcheck"):
         await CheckTask(client).check_task(message)
     elif message.content.startswith("/task_all_check"):
