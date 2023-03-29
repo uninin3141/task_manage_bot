@@ -1,3 +1,5 @@
-discord.py[voice]
+discord
+discord.ui
+dataset.db
 pytz
-mysql-connector-python>=8.0.11
+mysql.connector
