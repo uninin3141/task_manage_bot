@@ -1,5 +1,4 @@
 discord
 discord.ui
-dataset.db
 pytz
 mysql.connector
