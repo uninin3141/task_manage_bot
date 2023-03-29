@@ -35,11 +35,11 @@ class RecordTask:
         self.priority = None
         self.status =None
 
-        def check(msg):
+    def check(self,message):
+        def inner_check(msg):
             return msg.author == message.author and msg.channel == message.channel
-        self.check = check
+        return inner_check
         
-        self.user_id = None
 
     async def record_start_date(self,message):
         self.user_id = message.author.id
@@ -72,7 +72,7 @@ class RecordTask:
         #インプット機能
         async def request_input(embed_message):
             await message.channel.send(embed=embed_message)
-            response_msg = await self.client.wait_for('message')
+            response_msg = await self.client.wait_for('message', check=self.check(message))
             return response_msg.content
         #validate機能
         async def validate_input(input_str, validation_func, error_message):
