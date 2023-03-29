@@ -51,12 +51,12 @@ def get_all_tasks(user_id):
 
     return tasks
 #新規のデータの追加
-def add_task(user_id, starttime_str, task,status,priority,endtime_str):
+def add_task(user_id, startdatetime_str, task,status,priority,enddatetime_str):
     connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute( "INSERT INTO tasks (user_id, starttime, task,status,priority,endtime) VALUES (%s, %s, %s,%s,%s,%s)",
-        (user_id, starttime_str, task,status,priority,endtime_str)
+        (user_id, startdatetime_str, task,status,priority,enddatetime_str)
     )
 
     connection.commit()
