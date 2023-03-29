@@ -45,15 +45,13 @@ class RecordTask:
         self.user_id = message.author.id
 
         startdatetime_str = await self.calendar_start.get_start_date(message)
-        startdatetime_str = startdatetime_str.replace('年', '-').replace('月', '-').replace('日', ' ').replace('時', ':') + '00:00'
-        self.startdatetime_str = jst.localize(datetime.strptime(startdatetime_str, "%Y-%m-%d %H:%M:%S"))
+        self.startdatetime_str = jst.localize(datetime.strptime(startdatetime_str, "%Y年%m月%d日%H時"))
 
     async def record_end_date(self,message):
         self.user_id = message.author.id
 
         enddatetime_str = await self.calendar_end.get_end_date(message)
-        enddatetime_str = enddatetime_str.replace('年', '-').replace('月', '-').replace('日', ' ').replace('時', ':') + '00:00'
-        self.enddatetime_str = jst.localize(datetime.strptime(enddatetime_str, "%Y-%m-%d %H:%M:%S"))
+        self.enddatetime_str = jst.localize(datetime.strptime(enddatetime_str, "%Y年%m月%d日%H時"))
     
     async def record_priority(self,message):
         self.user_id = message.author.id
