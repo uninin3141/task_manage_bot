@@ -35,7 +35,7 @@ class ChoicePriorityView(View):
     
     async def on_timeout(self) -> None:
         if not self.selected_label:
-            embed = discord.Embed(title="タイムアウトだよ、もう一度選択してね(10秒以内に入力してね)", description="", color=0xFF0000)
+            embed = discord.Embed(title="タイムアウトだよ、もう一度選択してね(4秒以内に入力してね)", description="", color=0xFF0000)
             await self.message.channel.send(embed=embed)
         
         self.stop()
@@ -47,7 +47,7 @@ class PriorityButton:
 
     async def get_priority_button(self,message):
 
-        embed_priority = discord.Embed(title="優先度を選択してね", description="", color=0x00ff00)
+        embed_priority = discord.Embed(title="優先度を4秒以内に選択してね", description="", color=0x00ff00)
         await message.channel.send(embed=embed_priority)
 
         view = ChoicePriorityView(message)

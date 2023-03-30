@@ -34,9 +34,8 @@ class ChoiceStatusView(View):
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         return not interaction.user.bot
     async def on_timeout(self) -> None:
-        embed = discord.Embed(title="タイムアウトだよ、5秒以内にもう一度選択してね", description="", color=0xFF0000)
         if not self.selected_label:
-            embed = discord.Embed(title="タイムアウトだよ、もう一度選択してね(10秒以内に入力してね)", description="", color=0xFF0000)
+            embed = discord.Embed(title="タイムアウトだよ、もう一度選択してね(4秒以内に入力してね)", description="", color=0xFF0000)
             await self.message.channel.send(embed=embed)
         
         self.stop()
@@ -47,7 +46,7 @@ class StatusButton:
 
     async def get_status_button(self,message):
 
-        embed_status = discord.Embed(title="ステータスを選択してね", description="", color=0x00ff00)
+        embed_status = discord.Embed(title="ステータスを4秒以内に選択してね", description="", color=0x00ff00)
         await message.channel.send(embed=embed_status)
 
         view = ChoiceStatusView(message)

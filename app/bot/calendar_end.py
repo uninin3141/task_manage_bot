@@ -44,7 +44,7 @@ class TimeEndSelect(Select):
 
 #スタートdatetime選択View
 class CalendarEndView(View):
-    def __init__(self,message, timeout=10):
+    def __init__(self,message, timeout=15):
         super().__init__(timeout=timeout)
         self.selected_date = None
         self.selected_time = None
@@ -55,7 +55,7 @@ class CalendarEndView(View):
     
     async def on_timeout(self) -> None:
         if not self.selected_date or not self.selected_time:
-            embed = discord.Embed(title="タイムアウトだよ、もう一度選択してね(10秒以内に入力してね)", description="", color=0xFF0000)
+            embed = discord.Embed(title="タイムアウトだよ、もう一度選択してね(15秒以内に入力してね)", description="", color=0xFF0000)
             await self.message.channel.send(embed=embed)
         
         self.stop()
@@ -67,7 +67,9 @@ class CalendarEnd:
 
     async def get_end_date(self,message):
 
-        embed_enddate = discord.Embed(title="予定終了日時をプルタブから選択してね(上のタブが1日~15日、真ん中のタブが16日～月末、下のタブが時間だよ)", description="", color=0x00ff00)
+        embed_startdate = discord.Embed(title="予定終了日時をプルタブから15秒以内に選択してね", \
+            description="上のタブが1日~15日、真ん中のタブが16日～月末、下のタブが時間だよ。日を上のタブ、真ん中のタブの「どちらか一つ」から、時間を下のタブから一つ選んでね。\
+            ただし予定開始日時以前の日時を選ぶとタスク入力ができないよ。", color=0x00ff00)
         await message.channel.send(embed=embed_enddate)
 
         view = CalendarEndView(message)
