@@ -67,7 +67,7 @@ class CalendarEnd:
 
     async def get_end_date(self,message):
 
-        embed_startdate = discord.Embed(title="予定終了日時をプルタブから15秒以内に選択してね", \
+        embed_enddate = discord.Embed(title="予定終了日時をプルタブから15秒以内に選択してね", \
             description="上のタブが1日~15日、真ん中のタブが16日～月末、下のタブが時間だよ。日を上のタブ、真ん中のタブの「どちらか一つ」から、時間を下のタブから一つ選んでね。\
             ただし予定開始日時以前の日時を選ぶとタスク入力ができないよ。", color=0x00ff00)
         await message.channel.send(embed=embed_enddate)
