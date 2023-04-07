@@ -15,10 +15,6 @@ client = discord.Client(intents=intents)
 intents.message_content = True
 intents.members = True 
 
-now = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
-YEAR = now.year
-MONTH = now.month
-last_day_of_month = calendar.monthrange(YEAR, MONTH)[1]
 
 #月日選択クラス
 class CalendarEndSelect(Select):
@@ -44,13 +40,16 @@ class TimeEndSelect(Select):
 
 #スタートdatetime選択View
 class CalendarEndView(View):
-    def __init__(self,message, timeout=15):
+    def __init__(self,message,year,month,last_day,timeout=15):
         super().__init__(timeout=timeout)
         self.selected_date = None
         self.selected_time = None
         self.message = message
-        self.add_item(CalendarEndSelect(YEAR, MONTH, 1, 15))
-        self.add_item(CalendarEndSelect(YEAR, MONTH, 16, last_day_of_month))
+        self.year = year
+        self.month = month
+        self.last_day = last_day
+        self.add_item(CalendarEndSelect(self.year, self.month, 1, 15))
+        self.add_item(CalendarEndSelect(self.year, self.month, 16, self.last_day))
         self.add_item(TimeEndSelect(0, 23))
     
     async def on_timeout(self) -> None:
@@ -72,7 +71,12 @@ class CalendarEnd:
             ただし予定開始日時以前の日時を選ぶとタスク入力ができないよ。", color=0x00ff00)
         await message.channel.send(embed=embed_enddate)
 
-        view = CalendarEndView(message)
+        now = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
+        YEAR = now.year
+        MONTH = now.month
+        last_day = calendar.monthrange(YEAR, MONTH)[1]
+
+        view = CalendarEndView(message,year=YEAR,month=MONTH,last_day=last_day)
         cal_1 = calendar.TextCalendar().formatmonth(YEAR, MONTH)
         sent_message = await message.channel.send(f"\n```\n{cal_1}```")
         view.message = sent_message

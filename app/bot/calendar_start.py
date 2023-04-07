@@ -15,11 +15,6 @@ client = discord.Client(intents=intents)
 intents.message_content = True
 intents.members = True 
 
-now = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
-YEAR = now.year
-MONTH = now.month
-last_day_of_month = calendar.monthrange(YEAR, MONTH)[1]
-
 #月日選択クラス
 class CalendarStartSelect(Select):
     def __init__(self, year, month, start_day, end_day, **kwargs):
@@ -30,7 +25,6 @@ class CalendarStartSelect(Select):
         self.view.selected_date = self.values[0]
         await interaction.response.send_message(f"選択された時間: {self.view.selected_date}", ephemeral=True)
 
-        
 #時間選択クラス
 class TimeStartSelect(Select):
     def __init__(self,start_time, end_time, **kwargs):
@@ -43,13 +37,16 @@ class TimeStartSelect(Select):
 
 #スタートdatetime選択View
 class CalendarStartView(View):
-    def __init__(self,message, timeout=15):
+    def __init__(self,message, year,month,last_day,timeout=15):
         super().__init__(timeout=timeout)
         self.selected_date = None
         self.selected_time = None
         self.message = message
-        self.add_item(CalendarStartSelect(YEAR, MONTH, 1, 15))
-        self.add_item(CalendarStartSelect(YEAR, MONTH, 16, last_day_of_month))
+        self.year = year
+        self.month = month
+        self.last_day = last_day
+        self.add_item(CalendarStartSelect(self.year, self.month, 1, 15))
+        self.add_item(CalendarStartSelect(self.year, self.month, 16, self.last_day))
         self.add_item(TimeStartSelect(0, 23))
     
     async def on_timeout(self) -> None:
@@ -71,7 +68,12 @@ class CalendarStart:
             ただし昨日以前の日付を選ぶとタスク入力ができないよ。", color=0x00ff00)
         await message.channel.send(embed=embed_startdate)
 
-        view = CalendarStartView(message)
+        now = datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
+        YEAR = now.year
+        MONTH = now.month
+        last_day = calendar.monthrange(YEAR, MONTH)[1]
+
+        view = CalendarStartView(message,year=YEAR,month=MONTH,last_day=last_day)
         cal_1 = calendar.TextCalendar().formatmonth(YEAR, MONTH)
         sent_message = await message.channel.send(f"\n```\n{cal_1}```")
         view.message = sent_message
