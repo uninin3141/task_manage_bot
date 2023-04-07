@@ -30,6 +30,7 @@ class CalendarStartSelect(Select):
         self.view.selected_date = self.values[0]
         await interaction.response.send_message(f"選択された時間: {self.view.selected_date}", ephemeral=True)
 
+        
 #時間選択クラス
 class TimeStartSelect(Select):
     def __init__(self,start_time, end_time, **kwargs):
